@@ -26,6 +26,5 @@ RUN mkdir -p $OPENCV_SRC_DIR \
     && rm -rf $OPENCV_SRC_DIR
 
 RUN echo "$OPENCV_PREFIX/lib" > /etc/ld.so.conf.d/opencv.conf && ldconfig
-
 ENV PKG_CONFIG_PATH $OPENCV_PREFIX/lib/pkgconfig/:$PKG_CONFIG_PATH
 
