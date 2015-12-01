@@ -7,7 +7,6 @@ ENV OPENCV_VERSION 3.0.0
 ENV OPENCV_ARCHIVE_URL https://github.com/Itseez/opencv/archive/$OPENCV_VERSION.tar.gz
 
 RUN yum update -y && yum install -y \
-    tar \
     make \
     cmake \
     gcc-c++ \
