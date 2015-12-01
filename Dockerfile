@@ -17,8 +17,7 @@ RUN yum update -y && yum install -y \
 
 RUN mkdir -p $OPENCV_SRC_DIR \
     && cd $OPENCV_SRC_DIR \
-    && curl -o $OPENCV_ARCHIVE -L $OPENCV_ARCHIVE_URL \
-    && tar xvf $OPENCV_ARCHIVE \
+    && curl -sL $OPENCV_ARCHIVE_URL | tar xz \
     && cd $OPENCV_BASENAME \
     && cmake . \
        -DCMAKE_INSTALL_PREFIX=$OPENCV_PREFIX \
