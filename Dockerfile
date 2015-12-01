@@ -5,7 +5,6 @@ ENV OPENCV_PREFIX /opt/opencv
 ENV OPENCV_SRC_DIR $OPENCV_PREFIX/src
 ENV OPENCV_VERSION 3.0.0
 ENV OPENCV_BASENAME opencv-$OPENCV_VERSION
-ENV OPENCV_ARCHIVE $OPENCV_BASENAME.tar.gz
 ENV OPENCV_ARCHIVE_URL https://github.com/Itseez/opencv/archive/$OPENCV_VERSION.tar.gz
 
 RUN yum update -y && yum install -y \
