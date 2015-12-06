@@ -22,8 +22,8 @@ RUN mkdir -p $OPENCV_SRC_DIR \
        -DBUILD_TESTS=OFF \
        -DBUILD_PERF_TESTS=OFF \
        -DBUILD_WITH_DEBUG_INFO=OFF \
-    && make \
-    && make install \
+    && make -s \
+    && make -s install \
     && rm -rf $OPENCV_SRC_DIR
 
 RUN echo "$OPENCV_PREFIX/lib" > /etc/ld.so.conf.d/opencv.conf && ldconfig
