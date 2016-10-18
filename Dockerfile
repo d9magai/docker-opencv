@@ -10,6 +10,7 @@ RUN yum update -y && yum install -y \
     make \
     cmake \
     gcc-c++ \
+    gtk2-devel \
     && yum clean all
 
 RUN mkdir -p $OPENCV_SRC_DIR \
