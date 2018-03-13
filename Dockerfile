@@ -1,23 +1,30 @@
-FROM centos
+FROM ubuntu
 MAINTAINER d9magai
 
-ENV OPENCV_PREFIX /opt/opencv
-ENV OPENCV_SRC_DIR $OPENCV_PREFIX/src
-ENV OPENCV_VERSION 3.1.0
-ENV OPENCV_ARCHIVE_URL https://github.com/Itseez/opencv/archive/$OPENCV_VERSION.tar.gz
+ENV OPENCV_VERSION 3.4.1
+ENV OPENCV_ARCHIVE_URL https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.tar.gz
 
-RUN yum update -y && yum install -y \
-    make \
-    cmake \
-    gcc-c++ \
-    gtk2-devel \
-    && yum clean all
+RUN deps='\
+         gcc \
+         g++ \
+         make \
+         cmake \
+         pkg-config \
+         python3.5-dev \
+         curl \
+         ca-certificates \
+         ' \
+    && set -x \
+    && apt update -qq \
+    && apt install -y -qq $deps --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/* \
+    && curl -sL bootstrap.pypa.io/get-pip.py | python3.5 \
+    && pip3 install numpy
 
-RUN mkdir -p $OPENCV_SRC_DIR \
-    && curl -sL $OPENCV_ARCHIVE_URL | tar xz -C $OPENCV_SRC_DIR \
-    && cd $OPENCV_SRC_DIR/opencv-$OPENCV_VERSION \
-    && cmake . \
-       -DCMAKE_INSTALL_PREFIX=$OPENCV_PREFIX \
+RUN curl -sL $OPENCV_ARCHIVE_URL | tar xz -C /tmp \
+    && mkdir -p /tmp/opencv-${OPENCV_VERSION}/build \
+    && cd /tmp/opencv-${OPENCV_VERSION}/build \
+    && cmake .. \
        -DBUILD_DOCS=OFF \
        -DBUILD_EXAMPLES=OFF \
        -DBUILD_TESTS=OFF \
@@ -25,10 +32,5 @@ RUN mkdir -p $OPENCV_SRC_DIR \
        -DBUILD_WITH_DEBUG_INFO=OFF \
     && make -s \
     && make -s install \
-    && rm -rf $OPENCV_SRC_DIR
-
-RUN echo "$OPENCV_PREFIX/lib" > /etc/ld.so.conf.d/opencv.conf && ldconfig
-ENV PKG_CONFIG_PATH $OPENCV_PREFIX/lib/pkgconfig/:$PKG_CONFIG_PATH
-
-CMD ["/usr/bin/pkg-config", "--cflags", "--libs", "opencv"] 
+    && rm -rf /tmp/opencv-${OPENCV_VERSION}
 
